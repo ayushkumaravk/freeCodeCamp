@@ -1,0 +1,196 @@
+
+<!DOCTYPE html><html lang='en' class=''>
+<head><script src='//static.codepen.io/assets/editor/live/console_runner-ce3034e6bde3912cc25f83cccb7caa2b0f976196f2f2d52303a462c826d54a73.js'></script><script src='//static.codepen.io/assets/editor/live/css_live_reload_init-890dc39bb89183d4642d58b1ae5376a0193342f9aed88ea04330dc14c8d52f55.js'></script><meta charset='UTF-8'><meta name="robots" content="noindex"><link rel="shortcut icon" type="image/x-icon" href="//static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" /><link rel="mask-icon" type="" href="//static.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" /><link rel="canonical" href="https://codepen.io/eday69/pen/LrZqMO?editors=1100" />
+
+
+<style class="cp-pen-styles">#navbar {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+}
+
+nav ul {
+  text-align: right;
+  padding-right:50px;
+}
+
+nav li {
+  display: inline-block;
+  list-style: none;
+  margin: 5px;
+}
+
+@media (max-width: 900px) {
+  nav li a {
+    color: green;
+  }
+}
+
+nav li a {
+  color: yellow;
+  text-decoration: none;
+}
+
+#welcome-section {
+  top: 0;
+  background: linear-gradient(90deg, Bisque, Sienna);
+  text-align: center;
+  font-size: 1.9vw;
+  padding-top: 40vh;
+  height: 60vh;
+}
+
+#welcome-section p {
+  color: blue;
+}
+
+#projects {
+  top: 0;
+  background: lightgray;;
+  display: grid;
+  grid-template-columns:repeat(3, 1fr);
+/*  grid-template-rows:repeat(2, 1fr); */
+  justify-self: center;
+  padding-top: 30vh;
+  height: 70vh;
+}
+
+.project-tile {
+  text-align: center;
+  background-color: white;
+  border: 1px solid black;
+  margin: 10px;
+  position: relative;
+}
+
+.project-tile header {
+  font-family: sanserif;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-size: 1.3em;
+}
+
+.project-tile img {
+  max-height: 100%;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.project-tile div {
+  font-family: sanserif;
+  font-size: 0.9em;
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+}
+
+#hobbies {
+  top: 0;
+  background: yellowgreen;
+  display: grid;
+  grid-template-columns:repeat(3, 1fr);
+/*  grid-template-rows:repeat(2, 1fr); */
+  justify-self: center;
+  padding-top: 30vh;
+  height: 70vh;
+}</style></head><body>
+<script src="https://gitcdn.link/repo/freeCodeCamp/testable-projects-fcc/master/build/bundle.js"></script>
+
+<!--
+
+Hello Camper!
+
+For now, the test suite only works in Chrome! Please read the README below in the JS Editor before beginning. Feel free to delete this message once you have read it. Good luck and Happy Coding!
+
+- The freeCodeCamp Team
+
+-->
+<body>
+<nav id="navbar" >
+  <ul>
+    <li><a href="#welcome-section">Welcome</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#hobbies">Hobbies</a></li>
+  </ul>
+</nav>
+
+<div id="welcome-section">
+  <h1>Welcome to my personal portfolio webpage !</h1>
+  <p>by Eric Day</p>
+</div>
+
+<div id="projects">
+  <div class="project-tile">
+    <header>freeCodeCamp</header>
+    <span class="helper"></span>
+    <a href="https://github.com/eday69/freeCodeCamp"><img src="https://i0.wp.com/www.samuelpath.com/wp-content/uploads/2017/06/FCC-logo.png?zoom=2&w=525" alt="freeCodeCamp"/></a>
+    <div>Projects completed from freeCodeCamp</div>
+  </div>
+  <div class="project-tile">
+    <header>lightHouseLabs</header>
+    <a href="https://github.com/eday69/LightHouseLab21Days"><img src="https://pbs.twimg.com/profile_images/378800000328970347/40e96c650dad499b060a4f24ddc68c6e_400x400.png" alt="lightHouseLabs"/></a>
+    <div>LightHouse Labs 21 Day Coding Challenge</div>
+  </div>
+  <div class="project-tile">
+    <header>Decipher</header>
+    <a href="https://github.com/eday69/decipher_letter_substitution"><img src="https://www.wikihow.com/images/thumb/e/e9/Decipher-a-Secret-Code-Step-1-Version-4.jpg/aid171085-v4-728px-Decipher-a-Secret-Code-Step-1-Version-4.jpg" alt="lightHouseLabs"/></a>
+    <div>Decipher, letter substitution, using node.js, REST API</div>
+  </div>
+</div>
+
+
+<div id="hobbies">
+  <div class="project-tile">
+    <header>Running</header>
+<img src="https://www.economist.com/sites/default/files/imagecache/1280-width/images/print-edition/20121222_XSP005_0.jpg" alt="Running"/></a>
+    <div>Long distance running</div>
+  </div>
+  <div class="project-tile">
+    <header>Cycling</header>
+<img src="https://i.pinimg.com/564x/07/18/84/071884569ee9736aed59b9546d18f69a.jpg" alt="Cycling"/></a>
+    <div>Love to do road cycling</div>
+  </div>
+  <div class="project-tile">
+    <header>Hiking</header>
+<img src="http://a57.foxnews.com/images.foxnews.com/content/fox-news/great-outdoors/2017/11/07/meet-man-hiking-entire-western-hemisphere/_jcr_content/par/featured_image/media-0.img.jpg/1862/1048/1510078569799.jpg?ve=1&tl=1" alt="Hiking"/></a>
+    <div>Hiking !</div>
+  </div>
+</div>
+
+<div id="mylinks">
+  <p><a id="profile-link" target="_blank" href="https://github.com/eday69">Check out my GitHub</a></p>
+</div>
+</body>
+
+<script src='//static.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://gitcdn.link/repo/freeCodeCamp/testable-projects-fcc/master/build/bundle.js'></script>
+<script >// !! IMPORTANT README:
+
+// You may add additional external JS and CSS as needed to complete the project, however the current external resource MUST remain in place for the tests to work. BABEL must also be left in place.
+
+/***********
+INSTRUCTIONS:
+  - Select the project you would
+    like to complete from the dropdown
+    menu.
+  - Click the "RUN TESTS" button to
+    run the tests against the blank
+    pen.
+  - Click the "TESTS" button to see
+    the individual test cases.
+    (should all be failing at first)
+  - Start coding! As you fulfill each
+    test case, you will see them go
+    from red to green.
+  - As you start to build out your
+    project, when tests are failing,
+    you should get helpful errors
+    along the way!
+    ************/
+
+// PLEASE NOTE: Adding global style rules using the * selector, or by adding rules to body {..} or html {..}, or to all elements within body or html, i.e. h1 {..}, has the potential to pollute the test suite's CSS. Try adding: * { color: red }, for a quick example!
+
+// Once you have read the above messages, you can delete all comments.
+//# sourceURL=pen.js
+</script>
+</body></html>

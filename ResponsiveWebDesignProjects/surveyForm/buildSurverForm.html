@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang='en' class=''>
+<head><script src='//static.codepen.io/assets/editor/live/console_runner-ce3034e6bde3912cc25f83cccb7caa2b0f976196f2f2d52303a462c826d54a73.js'></script><script src='//static.codepen.io/assets/editor/live/css_live_reload_init-890dc39bb89183d4642d58b1ae5376a0193342f9aed88ea04330dc14c8d52f55.js'></script><meta charset='UTF-8'><meta name="robots" content="noindex"><link rel="shortcut icon" type="image/x-icon" href="//static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" /><link rel="mask-icon" type="" href="//static.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" /><link rel="canonical" href="https://codepen.io/eday69/pen/qKZbBE" />
+
+
+<style class="cp-pen-styles">body {
+  background-color: rgb(160, 82, 45);
+  text-align: center;
+  font-family: monospace;
+}
+
+form {
+  background-color: lightgray;
+  margin: 10px;
+  padding: 10px;
+}
+
+input {
+  text-align: left;
+}
+
+ul {
+  list-style: none;
+}
+
+textarea {
+  width: 300px;
+  height: 150px;
+}
+.left {
+  justify-self: right;
+}
+.right {
+  justify-self: left;
+  text-align: left;
+}
+
+#number {
+  width: 11em;
+}
+
+.container {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 10px;
+}
+
+
+
+</style></head><body>
+<script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js">
+</script>
+
+<!--
+
+Hello Camper!
+
+For now, the test suite only works in Chrome! Please read the README below in the JS Editor before beginning. Feel free to delete this message once you have read it. Good luck and Happy Coding!
+
+- The freeCodeCamp Team
+
+-->
+<h1 id="title">Employer questionnare</h1>
+<p id="description">Do you want to hire me? Then please fill this form !
+</p>
+<form id="survey-form">
+  <div class=container>
+    <div class="left">
+      <label id="name-label" for="name">Company name</label>
+    </div>
+    <div class="right">
+      <input id="name" required placeholder="Enter your company name">
+    </div>
+    <div class="left">
+      <label id="email-label" for="email">Company email</label>
+    </div>
+    <div class="right">
+      <input id="email" type="email" required placeholder="Enter company email contact">
+    </div>
+    <div class="left">
+      <label id="number-label" for="number">Best salary offered</label>
+    </div>
+    <div class="right">
+      <input id="number" type="number" min="75000" max="150000" step="5000" size="17" required placeholder="Enter salary offered">
+    </div>
+    <div class="left">
+      <label for="dropdown">Type of Company</label>
+    </div>
+    <div class="right">
+      <select id="dropdown">
+    <option value="HT">High Tech</option>
+    <option value="OG">Oil & Gas</option>
+    <option value="FI">Finance</option>
+  </select>
+    </div>
+    <div class="left">
+      <label for="typework">Type of work:</label>
+    </div>
+    <div class="right">
+      <ul id="typework">
+        <li>
+          <label><input id="fulltime" type="radio" name="typework" value="F">Full Time</label>
+        </li>
+        <li>
+          <label><input id="partime" type="radio" name="typework" value="P">Part Time</label>
+        </li>
+      </ul>
+    </div>
+    <div class="left">
+      <label for="wherework">Where's the work:</label>
+    </div>
+    <div class="right">
+      <ul id="wherework">
+        <li>
+          <label><input id="local" type="radio" name="wherework" value="L">Local</label>
+        </li>
+        <li>
+          <label><input id="remote" type="radio" name="wherework" value="R">Remote</label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="left">
+      <label for="perks">Perks you offer:</label>
+    </div>
+    <div class="right">
+      <ul id="perks">
+        <li>
+          <label><input id="parking" type="checkbox" name="perk" value='parking'>Parking</label>
+        </li>
+        <li>
+          <label><input id="freefood" type="checkbox" name="perk" value='freefood'>Free food</label>
+        </li>
+        <li>
+          <label><input id="music" type="checkbox" name="perk" value='music'>Music</label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="left">
+      <label for="textarea">Care to comment any additional things?</label>
+    </div>
+    <div class="right">
+      <textarea id="textarea"></textarea>
+    </div>
+  </div>
+    <button id="submit" type="submit">Send to Me</button>
+</form>
+<script src='//static.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://gitcdn.link/repo/freeCodeCamp/testable-projects-fcc/master/build/bundle.js'></script>
+<script >// !! IMPORTANT README:
+
+// You may add additional external JS and CSS as needed to complete the project, however the current external resource MUST remain in place for the tests to work. BABEL must also be left in place.
+
+/***********
+INSTRUCTIONS:
+  - Select the project you would
+    like to complete from the dropdown
+    menu.
+  - Click the "RUN TESTS" button to
+    run the tests against the blank
+    pen.
+  - Click the "TESTS" button to see
+    the individual test cases.
+    (should all be failing at first)
+  - Start coding! As you fulfill each
+    test case, you will see them go
+    from red to green.
+  - As you start to build out your
+    project, when tests are failing,
+    you should get helpful errors
+    along the way!
+    ************/
+
+// PLEASE NOTE: Adding global style rules using the * selector, or by adding rules to body {..} or html {..}, or to all elements within body or html, i.e. h1 {..}, has the potential to pollute the test suite's CSS. Try adding: * { color: red }, for a quick example!
+
+// Once you have read the above messages, you can delete all comments.
+//# sourceURL=pen.js
+</script>
+</body></html>
