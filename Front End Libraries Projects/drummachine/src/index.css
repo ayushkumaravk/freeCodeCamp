@@ -2,4 +2,167 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background-color: white;
 }
+
+#display {
+  margin-left: 30%;
+  margin-right: 30%;
+  margin-top:10%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 1px solid black;
+}
+
+.drum-pad {
+  width: 25%;
+  height: 40px;
+  margin:10px;
+  border-radius: 100%;
+
+}
+.drum-pad-not-played{
+  background-color: #FDF5E6;
+  border: 1px solid black;
+}
+
+.drum-pad-played {
+  background-color: #FFDAB9;
+  border: 1px solid red;
+}
+
+/*
+
+.drumdraw {
+    --drum-skin: gainsboro;
+    --drum-side: brown;
+    --drum-metal: #c4c7ce;
+    position: relative;
+    margin: auto;
+    display: block;
+    margin-top: 5%;
+    width: 70px;
+    height: 70px;
+    border: 1px solid black;
+    background: white;
+  }
+
+  .drumdraw-body {
+    top: 45%;
+    left: 27%;
+    background: var(--drum-side);
+    width: 54%;
+    height: 35%;
+  }
+
+  .drumdraw-body-bottom {
+    top: 72.5%;
+    left: 27%;
+    background: var(--drum-side);
+    width: 54%;
+    height: 13%;
+    border-bottom-left-radius: 100%;
+    border-bottom-right-radius: 100%;
+    border-top-left-radius: 100%;
+    border-top-right-radius: 100%;
+  }
+
+  .drumdraw-upper {
+    top: 40%;
+    left: 23.5%;
+    background: var(--drum-skin);
+    width: 53%;
+    height: 13%;
+    border-bottom-left-radius: 100%;
+    border-bottom-right-radius: 100%;
+    border-top-left-radius: 100%;
+    border-top-right-radius: 100%;
+    border: 3px solid var(--drum-metal);
+  }
+
+  .drumdraw-lower {
+    top: 70%;
+    left: 23.5%;
+    background: var(--drum-skin);
+    width: 53%;
+    height: 13%;
+    border-bottom-left-radius: 100%;
+    border-bottom-right-radius: 100%;
+    border-top-left-radius: 100%;
+    border-top-right-radius: 100%;
+    border: 3px solid var(--drum-metal);
+  }
+
+  .drumdraw-bar-left {
+    top: 58%;
+    left: 39%;
+    background: var(--drum-metal);
+    width: 3%;
+    height: 27%;
+    border: 0px solid var(--drum-metal);
+  }
+
+  .drumdraw-bar-right {
+    top: 58%;
+    left: 63%;
+    background: var(--drum-metal);
+    width: 3%;
+    height: 27%;
+    border: 0px solid var(--drum-metal);
+  }
+
+  .drumdraw * {
+    position: absolute;
+  }
+
+
+</style>
+<div class="penguin">
+  <div class="penguin-bottom">
+    <div class="right-hand"></div>
+    <div class="left-hand"></div>
+    <div class="right-feet"></div>
+    <div class="left-feet"></div>
+  </div>
+  <div class="penguin-top">
+    <div class="right-cheek"></div>
+    <div class="left-cheek"></div>
+    <div class="belly"></div>
+    <div class="right-eye">
+      <div class="sparkle"></div>
+    </div>
+    <div class="left-eye">
+      <div class="sparkle"></div>
+    </div>
+    <div class="blush-right"></div>
+    <div class="blush-left"></div>
+    <div class="beak-top"></div>
+    <div class="beak-bottom"></div>
+  </div>
+</div>
+
+<div class="drumdraw">
+  <div class="drumdraw-lower">
+  </div>
+  <div class="drumdraw-body-bottom">
+  </div>
+  <div class="drumdraw-body">
+  </div>
+  <div class="drumdraw-upper">
+  </div>
+  <div class="drumdraw-bar-left">
+  </div>
+  <div class="drumdraw-bar-right">
+  </div>
+<!--
+  <div class="drumdraw-bottom">
+  </div>
+  <div class="drumdraw-leftside">
+  </div>
+  <div class="drumdraw-rightside">
+  </div>
+  -->
+</div> */
