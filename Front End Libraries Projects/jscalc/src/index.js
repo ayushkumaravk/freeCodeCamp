@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 //import App from './App';
-import registerServiceWorker from './registerServiceWorker';
-
 const validKeys = ['Q','W','E','A','S','D','Z','X','C'];
 
 class App extends React.Component {

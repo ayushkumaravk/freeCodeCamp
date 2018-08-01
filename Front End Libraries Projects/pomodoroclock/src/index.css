@@ -2,4 +2,126 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background-color: PowderBlue;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#container {
+  margin-top: 20vh;
+  background-color: white;
+  width: 330px;
+  height: 350px;
+  border-radius: 5px;
+  box-shadow: 7px 7px 7px darkgray;
+}
+
+.clockConfig {
+  margin-top:5%;
+  display: grid;
+  grid-template-columns: 39px 70px 39px 39px 70px 39px;
+  grid-template-rows: 45px 20px 50px 20px;
+  grid-gap: 1px;
+}
+
+.pomodoroTitle {
+  grid-column: 1 / 7;
+  text-align: center;
+  font-family: 'Orbitron';
+  font-size: 1.9em;
+  font-weight: bold;
+}
+
+.pomodoroFooter {
+  text-align: right;
+  font-family: 'Orbitron';
+  font-size: 0.5em;
+}
+
+.nameSession {
+  grid-column: 1 / 4;
+  text-align: center;
+  font-family: 'Orbitron';
+  font-size: 1.0em;
+}
+
+.nameBreak {
+  grid-column: 4 / 7;
+  text-align: center;
+  font-family: 'Orbitron';
+  font-size: 1.0em;
+}
+
+.leftMinus {
+  margin-top: 20%;
+  margin-left: 20%;
+  margin-bottom: 20%;
+  background-color: Teal;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  font-family: 'Courier New';
+  font-size: 1.5em;
+  font-style: bold;
+  color: white;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
+}
+.leftMinus:focus, rightPlus:focus{
+  outline: none;
+}
+
+.rightPlus {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: 0;
+  margin-right: 20%;
+}
+/*
+<div id="session-length" className="length"></div>
+*/
+.length {
+  border: 2px solid Teal;
+  border-radius: 5px;
+  font-family: 'Orbitron';
+  font-size: 2.2em;
+  font-style: bold;
+  color: Teal;
+  display: flex;
+  justify-content: center;
+}
+
+.bar {
+  border: 1px solid black;
+  height: 26px;
+}
+
+.labelSession{
+  text-align: center;
+  font-family: 'Orbitron';
+  font-size: 1.0em;
+  display: flex;
+  flex-direction: column;
+  justify-content:flex-end;
+  align-items:center;
+}
+.timeLeft {
+  font-family: 'Orbitron';
+  font-size: 3.5em;
+  color: Teal;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content:space-around;
 }
