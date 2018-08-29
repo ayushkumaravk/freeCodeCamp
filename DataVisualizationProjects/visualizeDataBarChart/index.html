@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Visualize Data with Bar Chart</title>
+  </head>
+  <body>
+
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300|Open+Sans' rel='stylesheet' type='text/css'>
+
+
+    <script type="text/javascript">
+
+    const pad = (n, s) => ('000000000' + n).substr(-s);
+
+     const graphBar = function(dataset) {
+
+        const w = 1000;
+        const h = 600;
+        const num_elem = dataset.length;
+
+
+        var tooltip = d3.select(".tooltip")
+              .attr('id', 'tooltip')
+              .style("opacity", 0);
+
+        const padding = 60;
+        const points = Object.keys(dataset).length;
+        var datadate = dataset.map(function (item) {
+          return item[0];
+        });
+        var years = datadate.map(function (item) {
+          var parts = item.split('-');
+          return parts[0];
+        });
+
+//        var years = dataset.map(function (item) {
+//          var parts = item[0].split('-');
+//          var mydate = new Date(parts[0], parts[1] - 1, parts[2]);
+//          console.log('Max date is '+mydate);
+//          console.log('Year is '+parts[0]);
+//          return parts[0];
+//        });
+
+        var values = dataset.map(function (item) {
+          return item[1];
+        });
+
+        var gdpMin = d3.min(values);
+        var gdpMax = d3.max(values);
+
+        var linearScale = d3.scaleLinear().
+            domain([gdpMin, gdpMax]).
+            range([gdpMin / gdpMax * (h-padding), (h-padding)]);
+
+        scaledGDP = values.map(function (item) {
+          return linearScale(item);
+        });
+
+        const xScale = d3.scaleLinear()
+                         .domain([d3.min(years), d3.max(years)])
+                         .range([padding, w-padding]);
+
+        const yScale = d3.scaleLinear()
+                         .domain([gdpMin, gdpMax])
+                         .range([h-padding, gdpMin / gdpMax * h]);
+
+        const xAxis = d3.axisBottom(xScale)
+                        .tickFormat(d3.format("d"));
+        const yAxis = d3.axisLeft(yScale);
+
+        const svg = d3.select("body")
+                      .append("svg")
+                      .attr("width", w)
+                      .attr("height", h);
+/*
+       svg.append("g")
+           .attr("transform", "translate(0,0)")
+           .attr("class", "axis")
+           .call(d3.axisLeft(yScale)
+               .ticks(20, "s"));
+*/
+       svg.append("g")
+          .attr('id', 'x-axis')
+//           .attr("transform", "translate(0," + (h-padding) + ")")
+          .attr('transform', 'translate(0,'+(h-padding)+')')
+          .call(xAxis);
+
+       svg.append("g")
+          .attr('id', 'y-axis')
+          .attr("transform", "translate(" + (padding) + ",0)")
+          .call(yAxis);
+
+
+// y axis label
+        svg.append('text').
+        attr('transform', 'rotate(-90)').
+        attr('x', -200).
+        attr('y', 80).
+        text('Gross Domestic Product');
+
+        svg.selectAll("rect")
+           .data(scaledGDP)
+           .enter()
+           .append("rect")
+           .attr('data-date', (d, i) => datadate[i])
+           .attr('data-gdp', (d, i) => values[i])
+           .attr("x", (d, i) => ((w-padding*2)/num_elem)*i+padding)
+           .attr("y", (d, i) => {
+//             console.log("Values d i yScale(d) h :",d,i,yScale(d),h);
+//             return h;
+             return h-padding-d;
+           } )
+           .attr("width", w/num_elem)
+           .attr("height", (d) => d)
+           .attr("fill", "navy")
+           .attr("class", "bar")
+//           .append("title")
+//           .text((d, i) => values[i])
+           .on('mouseover', function (d, i) {
+//             tooltip.html(datadate[i] + '<br>' + '$' + values[i].toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + ' Billion').
+             tooltip.transition()
+             .style('opacity', .9);
+
+             tooltip.html(datadate[i] + '<br>' + '$' + values[i].toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + ' Billion')
+             .attr('data-date', datadate[i])
+             .style('left', ((i * w/num_elem) + 60) + 'px')
+             .style('top', h - 100 + 'px')
+             .style('transform', 'translateX(60px)');
+           })
+           .on('mouseout', function (d) {
+             tooltip.transition()
+             .style('opacity', 0);
+           });
+
+     }
+
+
+    function getData(){
+      var linkurl="https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json";
+      req=new XMLHttpRequest();
+      req.open("GET",linkurl,true);
+      req.send();
+      req.onload=function(){
+        json=JSON.parse(req.responseText);
+        //        var data = JSON.stringify(json.data);
+
+        var data = json.data;
+        graphBar(data);
+//         document.getElementsByClassName('message')[0].innerHTML=data;
+       };
+    }
+
+      document.addEventListener('DOMContentLoaded',function(){
+        getData();
+      });
+    </script>
+
+<style>
+  body {
+    text-align: center;
+    font-family: "Helvetica", sans-serif;
+  }
+  #title {
+    font-size: 40px;
+    font-family: "Roboto";
+  }
+  .bar:hover {
+    fill: brown;
+  }
+  .tooltip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    text-align: center;
+    width: 150px;
+    height: 50px;
+    padding: 2px;
+    font: 12px;
+    background: lightsteelblue;
+    box-shadow: 1px 1px 10px;
+    border-radius: 2px;
+    pointer-events: none;
+   }
+</style>
+<div class='container'>
+  <div id='title'>United States GNP</div>
+  <div class='tooltip'></div>
+</div>
+</body>
+</html>

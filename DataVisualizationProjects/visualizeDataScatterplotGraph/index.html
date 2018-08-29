@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Visualize Data with a Scatterplot Graph</title>
+  </head>
+  <body>
+
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300|Open+Sans' rel='stylesheet' type='text/css'>
+
+
+    <script type="text/javascript">
+    function getData(){
+      var linkurl="https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json";
+      req=new XMLHttpRequest();
+      req.open("GET",linkurl,true);
+      req.send();
+      req.onload=function(){
+        json=JSON.parse(req.responseText);
+        var data = json;
+//        console.log(JSON.stringify(json, null, 4));
+//        console.log("=============================");
+        for (var key in json) {
+           if (json.hasOwnProperty(key)) {
+//              console.log(key, json[key].Time);
+           }
+        }
+//        console.log("=============================");
+//        console.log(Object.keys(json)[0]);
+//        console.log(Object.values(json)[0]);
+
+//                var data = JSON.stringify(json);
+//                console.log('1.'+data);
+
+        graphScatter(data);
+//         document.getElementsByClassName('tooltip')[0].innerHTML=data;
+       };
+    }
+
+      document.addEventListener('DOMContentLoaded',function(){
+        getData();
+      });
+
+
+
+    const pad = (n, s) => ('000000000' + n).substr(-s);
+
+     const graphScatter = function(dataset) {
+
+        const full_w = 1000;
+        const full_h = 600;
+        const padding = 30;
+        const h = full_h-padding;
+        const w = full_w-padding;
+        const points = Object.keys(dataset).length;
+
+        var times=[];
+        var years=[];
+        for (var key in dataset) {
+           if (dataset.hasOwnProperty(key)) {
+             dataset[key].Time_Short = dataset[key].Time;
+             var parsedTime = dataset[key].Time.split(':');
+             dataset[key].Time = new Date(Date.UTC(1970, 0, 1, 0, parsedTime[0], parsedTime[1]));
+             times[key] = dataset[key].Time
+             years[key] = dataset[key].Year;
+           }
+        }
+
+
+        var tooltip = d3.select(".tooltip")
+              .attr('id', 'tooltip')
+              .style("opacity", 0);
+
+/*
+        var linearScale = d3.scaleLinear().
+            domain([gdpMin, gdpMax]).
+            range([gdpMin / gdpMax * (h-padding), (h-padding)]);
+*/
+        const xScale = d3.scaleLinear()
+                         .domain([d3.min(years)-1, d3.max(years)+1])
+                         .range([padding*2, w-padding]);
+        const xAxis = d3.axisBottom(xScale)
+                        .tickFormat(d3.format("d"));
+
+
+        var timeFormat = d3.timeFormat("%M:%S");
+        const yScale = d3.scaleTime()
+                         .domain(d3.extent(dataset, function (d) {
+                            return d.Time;
+                          }))
+                         .range([padding, h-padding]);
+
+
+
+        const yAxis = d3.axisLeft(yScale)
+                        .tickFormat(timeFormat);
+
+        const svg = d3.select("#graph")
+                      .append("svg")
+                      .attr("width", w)
+                      .attr("height", h);
+       svg.append("g")
+          .attr('id', 'x-axis')
+//           .attr("transform", "translate(0," + (h-padding) + ")")
+          .attr('transform', 'translate(0,'+(h-padding)+')')
+          .call(xAxis);
+
+       svg.append("g")
+          .attr('id', 'y-axis')
+          .attr("transform", "translate(" + (2*padding) + ",0)")
+          .call(yAxis);
+
+          //subtitle
+        svg.append("text")
+          .attr("x", w / 2)
+          .attr("y", 25)
+          .attr("text-anchor", "middle")
+          .style("font-size", "20px")
+          .text("35 Fastest times up Alpe d'Huez");
+
+
+          // y axis label
+        svg.append('text')
+          .attr('transform', 'rotate(-90)')
+          .attr('x', -200)
+          .attr('y', 15)
+          .text('Time in Minutes');
+
+        svg.append('text')
+          .attr('id','legend')
+          .attr('x', 800)
+          .attr('y', 230)
+          .attr('class', 'legend')
+          .text('No doping allegations');
+
+        svg.append('text')
+          .attr('id','legend')
+          .attr('x', 760)
+          .attr('y', 260)
+          .attr('class', 'legend')
+          .text('Riders with doping allegations');
+
+        svg.append("rect")
+          .attr("x",930)
+          .attr("y",250)
+          .attr("width", 15)
+          .attr("height", 15)
+          .style("fill", "red");
+
+        svg.append("rect")
+          .attr("x",930)
+          .attr("y",220)
+          .attr("width", 15)
+          .attr("height", 15)
+          .style("fill", "green");
+
+        svg.selectAll(".dot")
+           .data(dataset)
+           .enter()
+           .append("circle")
+           .attr("stroke", "black")
+           .attr("cx", (d, i) => {return xScale(d.Year);})
+           .attr("cy", (d, i) => { return yScale(d.Time); })
+           .attr("r", 7)
+           .attr("data-xvalue", function (d) {
+             return d.Year;
+           })
+           .attr("data-yvalue", function (d) {
+             return d.Time;
+           })
+
+           .style("fill", (d ,i) => {
+             return (d.Doping != "")?"red":"green";})
+           .attr("class", "dot")
+//           .append("title")
+//           .text((d, i) => values[i])
+           .on('mouseover', function (d, i) {
+             tooltip.transition()
+             .style('opacity', .9);
+
+             tooltip.html(d.Year + '<br>' + d.Name + '<br>Year: '+d.Year+', Time: '+d.Time_Short+'<br><br>'+d.Doping)
+             .attr('data-year', d.Year)
+             .style('left', xScale(d.Year) + 100 + 'px')
+             .style('top', yScale(d.Time) + 60 + 'px')
+             .style('transform', 'translateX(60px)');
+           })
+           .on('mouseout', function (d) {
+             tooltip.transition()
+             .style('opacity', 0);
+           });
+
+     }
+
+
+    </script>
+
+<style>
+  #title {
+    text-align: center;
+    font-size: 30px;
+    font-family: "Roboto";
+  }
+  .bar:hover {
+    fill: brown;
+  }
+  .tooltip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    text-align: left;
+    width: 250px;
+    height: 80px;
+    padding: 2px;
+    background: lightsteelblue;
+    box-shadow: 1px 1px 10px;
+    border-radius: 2px;
+    font-family: "Roboto";
+    font-size: 10px;
+    pointer-events: none;
+   }
+   #graphcontainer {
+     padding: 0;
+     margin: 0;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+   }
+   #graph{
+     text-align: center;
+     border-radius: 8px;
+     box-shadow: 1px 1px 10px;
+     width: 1000px;
+     height: 600px;
+   }
+   .legend {
+     text-align: center;
+     font-size: 12px;
+     font-family: "Roboto";
+   }
+   .doper {
+     background-color: red;
+   }
+   .nodoper {
+     background-color: green;
+   }
+
+</style>
+<div class='container'>
+  <div id='title'>Doping in Professional Bicycle Racing</div>
+  <div id='graphcontainer'>
+    <div id='graph'></graph>
+  </div>
+  <div class='tooltip'></div>
+</div>
+</body>
+</html>
