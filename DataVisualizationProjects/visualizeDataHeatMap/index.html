@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Visualize Data with Heat Map</title>
+  </head>
+  <body>
+
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300|Open+Sans' rel='stylesheet' type='text/css'>
+
+
+    <script type="text/javascript">
+    function getData(){
+      var linkurl="https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json";
+      req=new XMLHttpRequest();
+      req.open("GET",linkurl,true);
+      req.send();
+      req.onload=function(){
+        json=JSON.parse(req.responseText);
+        var data = json;
+//        console.log(JSON.stringify(json, null, 4));
+//        console.log("=============================");
+        for (var key in json) {
+           if (json.hasOwnProperty(key)) {
+//              console.log(key, json[key].Time);
+           }
+        }
+//        console.log("=============================");
+//        console.log(Object.keys(json)[0]);
+//        console.log(Object.values(json)[0]);
+
+//                var data = JSON.stringify(json);
+//                console.log('1.'+data);
+
+        graphHeatMap(data);
+//         document.getElementsByClassName('tooltip')[0].innerHTML=data;
+       };
+    }
+
+      document.addEventListener('DOMContentLoaded',function(){
+        getData();
+      });
+
+
+
+     const graphHeatMap = function(dataset) {
+
+        const monthNames = ["January", "February", "March", "April", "May",
+                            "June", "July", "August", "September", "October",
+                            "November", "December"];
+        const baseTemp = dataset.baseTemperature;
+        var data = dataset.monthlyVariance;
+
+        const bar_width=6;
+        const num_points = data.length;
+        const padding = 80;
+        const full_h = 600;
+        const h = full_h-padding;
+
+        var temps= [];
+        var years=[];
+        data.forEach(point => {
+          var variance=point.variance;
+          point.monthName = monthNames[point.month-1];
+          point.tempShort = parseFloat(parseFloat(baseTemp + variance).toFixed(1));
+          point.shortVar = variance.toFixed(1);
+          var tmp_year=parseInt(point.year);
+          if (point.month == "1") {
+            years.push(tmp_year);
+          }
+          temps.push(point.tempShort);
+        });
+
+        const bars = years.length;
+
+//        console.log(JSON.stringify(data));
+          minTemp = d3.min(temps);
+          maxTemp = d3.max(temps);
+          minYear = d3.min(years);
+          maxYear = d3.max(years);
+
+        var tooltip = d3.select(".tooltip")
+              .attr('id', 'tooltip')
+              .style("opacity", 0);
+
+/*
+        var linearScale = d3.scaleLinear().
+            domain([gdpMin, gdpMax]).
+            range([gdpMin / gdpMax * (h-padding), (h-padding)]);
+*/
+        const xScale = d3.scaleTime()
+                         .domain([new Date(minYear, 0, 1), new Date(maxYear, 11, 1)])
+                         .range([padding+20, (bars*bar_width)-(padding*2)]);
+
+        const xAxis = d3.axisBottom(xScale)
+                        .tickFormat(d3.timeFormat("%Y"))
+                        .ticks(d3.timeYear.every(10));
+
+        const numMonths=[0,1,2,3,4,5,6,7,8,9,10,11]
+        const yScale = d3.scaleTime()
+                        .domain([new Date(minYear, 0, 1), new Date(minYear, 11, 1)])
+//                         .domain(numMonths)
+                         .range([padding, h-padding]);
+//                         .rangeRoundBands([0, h], 0, 0);
+
+
+        const yAxis = d3.axisLeft(yScale)
+                        .tickFormat(d3.timeFormat("%B"))
+;
+//                        .tickSize(10);
+//                        .tickSize(10,1);
+//                        .tickValues(numMonths)
+//                        .tickFormat(function (numMonth) {
+//                          var thisDate = new Date(minYear, numMonth,1);
+//                          return d3.timeFormat("%B")(thisDate);
+//                        })
+//                        .ticks(d3.timeMonth.every(1));
+
+        const colorCodes =["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598",
+                "#FFFFBF", "#FEE08B", "#FDAE61", "#F46D43", "#D53E4F", "#9E0142"];
+
+        const myColor = d3.scaleQuantile()
+                          .domain([minTemp, maxTemp])
+                          .range(colorCodes);
+
+        var colorQuantiles = myColor.quantiles();
+        colorQuantiles.unshift(0);
+
+/*
+        var   myColorAxis = d3.scaleQuantile()
+                              .domain(colorQuantiles)
+                              .range([padding*2, 122])
+        const colorAxis = d3.axisBottom(myColorAxis);
+*/
+//        const xColorScale = d3.axisBottom(colorScale);
+/*
+        const colorScale = d3.scaleLinear()
+                             .domain([minTemp, maxTemp])
+                             .interpolate(d3.interpolateHcl)
+                             .range([d3.rgb("#007AFF"), d3.rgb('#FFF500')]);
+*/
+        const svg = d3.select("#graph")
+                      .append("svg")
+                      .attr("width", bars*bar_width)
+                      .attr("height", h);
+
+        // Title
+        svg.append("text")
+          .attr("x", bars*bar_width / 2)
+          .attr("y", 25)
+          .attr("id", "title")
+          .attr("text-anchor", "middle")
+          .attr("class", "title")
+          .text("Monthly Global Land-Surface Temperature");
+
+          //subtitle
+        svg.append("text")
+          .attr("x", bars*bar_width / 2)
+          .attr("y", 50)
+          .attr("id", "description")
+          .attr("text-anchor", "middle")
+          .style("font-size", "20px")
+          .text(minYear+" - "+maxYear+": base temperature "+baseTemp+"˚C");
+
+
+          // x axis label
+        svg.append('text')
+          .attr('x', bars*bar_width / 2)
+          .attr('y', h-42)
+          .attr("id", "x-axis")
+          .attr("class", "label")
+          .text('Years');
+
+          // x axis
+        svg.append("g")
+           .attr('id', 'x-axis')
+           .attr('transform', 'translate(0,'+(h-padding)+')')
+           .call(xAxis);
+
+           // y axis
+        svg.append("g")
+           .attr('id', 'y-axis')
+           .attr("transform", "translate(" + (padding+20) + ",0)")
+           .call(yAxis)
+           .selectAll("text")
+              .style("text-anchor", "middle")
+//              .attr("dx", "-.8em")
+              .attr("dy", "-.55em");
+//              .attr("transform", "rotate(-90)" );
+
+
+
+        svg.append('text')
+           .attr('transform', 'rotate(-90)')
+           .attr('x', -230)
+           .attr('y', 40)
+           .attr("id", "y-axis")
+           .attr("class", "label")
+           .text('Months');
+/*
+
+           // graph data
+        svg.selectAll("g.rect")
+           .data(data)
+           .enter()
+           .append("rect")
+           .attr("class","cell")
+           .attr("data-month", (d,i) => (d.month-1))
+           .attr("data-year", (d,i) => d.year)
+           .attr("data-temp", (d,i) => d.tempShort)
+           .attr("x", (d, i) => {
+               return xScale(new Date(d.year, 0, 1));
+           })
+           .attr("y", (d, i) => {
+               return yScale(d.month);
+           })
+           .attr("width", bar_width)
+           .attr("height", (h-2*padding)/12)
+           .style("fill", function (d, i) {
+                return myColor(d.tempShort);
+            })
+            // tooltip bubble
+           .on('mouseover', function (d, i) {
+                tooltip.transition()
+                .style('opacity', .9);
+                tooltip.html(()=>
+                  {
+                    var txtTemp=(d.tempShort<baseTemp)?(d.tempShort-baseTemp).toFixed(1):('+'+(d.tempShort-baseTemp).toFixed(1))+'˚C';
+                    return d.year +' - '+d.monthName+ '<br>' + d.tempShort + '<br> '+txtTemp;
+                  })
+                .attr('data-year', d.year)
+                .style('left', xScale(new Date(d.year, 0, 1))-60 +"px")
+                .style('top', yScale(d.month)+20+"px")
+                .style('transform', 'translateX(80px)');
+           })
+           // remove tooltip if user is out of focus
+           .on('mouseout', function (d) {
+                tooltip.transition()
+                .style('opacity', 0);
+           });
+*/
+           // color key code legend
+        const legend = svg.selectAll(".legend")
+                    .data(colorQuantiles)
+                    .enter()
+                    .append("g")
+                    .attr('id','legend')
+                    .attr("class", "legend")
+                    .attr("font-size", "12px")
+                    .attr("font-style", "Roboto")
+                    .attr("transform", function (d, i) {
+                      return "translate(" + i*30 + ",0)";
+                     });
+
+              // draw color codes
+       legend.append("rect")
+             .attr("x", (d, i) => padding*2+i)
+             .attr("y", h-50)
+             .attr("width", 30)
+             .attr("height", 25)
+             .style("fill", function (d, i) {
+                 return colorCodes[i];
+              });
+
+              // draw ticks
+       legend.append("rect")
+             .attr("x", (d, i) => {
+                return (i==0)?(padding*2+i):(padding*2+i-1);
+              })
+             .attr("y", h-25)
+             .attr("width", 1)
+             .attr("height", 5);
+
+             // write color value range
+       legend.append("text")
+             .attr("x", (d, i) => padding*2+(i+1))
+             .attr("y", h-7)
+             .text(function (d, i) {
+                return colorQuantiles[i].toFixed(1);
+             })
+             .style("text-anchor", "middle");
+    }
+    </script>
+
+<style>
+  .title {
+    text-align: center;
+    font-size: 30px;
+    font-family: "Roboto";
+  }
+  .label {
+    text-align: center;
+    font-size: 16px;
+    font-family: "Roboto";
+  }
+  .bar:hover {
+    fill: brown;
+  }
+  .tooltip {
+/*    display: flex;
+    align-items: center;
+    justify-content: center; */
+    position: absolute;
+    text-align: left;
+    width: 90px;
+    height: 35px;
+    padding: 2px;
+    background: lightsteelblue;
+    box-shadow: 1px 1px 10px;
+    border-radius: 2px;
+    font-family: "Roboto";
+    font-size: 10px;
+    pointer-events: none;
+   }
+   #graphcontainer {
+     padding: 0;
+     margin: 0;
+/*     display: flex;
+     align-items: center;
+     justify-content: center;
+     */
+   }
+   #graph{
+     text-align: center;
+/*     border-radius: 8px;
+     box-shadow: 1px 1px 10px;
+     width: 1000px; */
+     height: 600px;
+   }
+   .legend {
+     text-align: center;
+     font-size: 12px;
+     font-family: "Roboto";
+   }
+   .doper {
+     background-color: red;
+   }
+   .nodoper {
+     background-color: green;
+   }
+
+</style>
+<div class='container'>
+<!--  <div id='title'>Monthly Global Land-Surface Temperature</div> -->
+  <div id='graphcontainer'>
+    <div id='graph'></graph>
+  </div>
+  <div class='tooltip'></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+body {
+  text-align: center;
+  font-family: "Roboto";
+  font-size: 20px;
+  background-color: #fff;
+  color : #000;
+}
+
+#title {
+  font-size: 120%;
+}
+#description {
+  font-size: 130%;
+}
+
+.tile {
+  font-size: 7px;
+  color: #333;
+ }
+
+.tooltip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  text-align: center;
+  width: 130px;
+  height: 65px;
+  padding: 2px;
+  font: 12px;
+  font-family: "Roboto";
+  font-size: 10px;
+  background: lightsteelblue;
+  box-shadow: 1px 1px 10px;
+  border-radius: 2px;
+  pointer-events: none; }
